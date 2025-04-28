@@ -15,7 +15,7 @@ app = FastAPI()
 
 # Slack Bot Token from environment variable
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
-CHANNEL_NAME = "#new-channel"
+CHANNEL_NAME = "#test"
 
 
 def send_to_slack(message):
