@@ -1,3 +1,4 @@
+# main.py
 import os
 import requests
 from fastapi import FastAPI
@@ -7,14 +8,15 @@ from io import BytesIO
 from PIL import Image
 from dotenv import load_dotenv
 
-# .env 파일 로딩
+# Load environment variables
 load_dotenv()
 
 app = FastAPI()
 
-# Slack Bot Token (환경변수로 관리)
+# Slack Bot Token from environment variable
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
-CHANNEL_NAME = "#new-channel"  # 보내고 싶은 슬랙 채널명
+CHANNEL_NAME = "#new-channel"
+
 
 def send_to_slack(message):
     headers = {
@@ -30,9 +32,11 @@ def send_to_slack(message):
     print(f"Slack response text: {response.text}")
     return response.status_code
 
+
 class ChartPayload(BaseModel):
     image: str
     filename: str
+
 
 @app.post("/analyze")
 async def analyze_chart(payload: ChartPayload):
@@ -40,10 +44,10 @@ async def analyze_chart(payload: ChartPayload):
         img_data = base64.b64decode(payload.image)
         img = Image.open(BytesIO(img_data))
 
-        # (MACD/RSI 분석 자리)
+        # Placeholder for MACD/RSI analysis
         result = "✅ 분석 결과: MACD 골든크로스, RSI 67, 볼밴 상단 근접"
 
-        # Slack으로 결과 전송
+        # Send result to Slack
         slack_message = f"📈 *{payload.filename}* 분석 결과:\n{result}"
         send_to_slack(slack_message)
 
